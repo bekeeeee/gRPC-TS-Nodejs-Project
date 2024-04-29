@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "outDir": "./dist",
+    "strict": false,  // Consider setting strict to false to test if this resolves the issue
+    "esModuleInterop": true,
+    "skipLibCheck": true,  // This skips checking declarations files which might bypass the issue temporarily
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": [
+    "src/**/*",
+    "generated/**/*"
+  ],
+  "exclude": ["node_modules"]
+}
