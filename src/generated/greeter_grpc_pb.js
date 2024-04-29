@@ -48,6 +48,28 @@ function deserialize_greeter_HelloRequest(buffer_arg) {
   return greeter_pb.HelloRequest.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
+function serialize_greeter_LongGreetRequest(arg) {
+  if (!(arg instanceof greeter_pb.LongGreetRequest)) {
+    throw new Error('Expected argument of type greeter.LongGreetRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greeter_LongGreetRequest(buffer_arg) {
+  return greeter_pb.LongGreetRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_greeter_LongGreetResponse(arg) {
+  if (!(arg instanceof greeter_pb.LongGreetResponse)) {
+    throw new Error('Expected argument of type greeter.LongGreetResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greeter_LongGreetResponse(buffer_arg) {
+  return greeter_pb.LongGreetResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 
 // The greeting service definition.
 var GreeterService = exports.GreeterService = {
@@ -63,7 +85,7 @@ sayHello: {
     responseSerialize: serialize_greeter_HelloReply,
     responseDeserialize: deserialize_greeter_HelloReply,
   },
-  // streaming API
+  // Server streaming API
 greetManyTimes: {
     path: '/greeter.Greeter/GreetManyTimes',
     requestStream: false,
@@ -74,6 +96,18 @@ greetManyTimes: {
     requestDeserialize: deserialize_greeter_GreetManyTimesRequest,
     responseSerialize: serialize_greeter_GreetManyTimesResponse,
     responseDeserialize: deserialize_greeter_GreetManyTimesResponse,
+  },
+  // Client streaming API
+longGreet: {
+    path: '/greeter.Greeter/LongGreet',
+    requestStream: true,
+    responseStream: false,
+    requestType: greeter_pb.LongGreetRequest,
+    responseType: greeter_pb.LongGreetResponse,
+    requestSerialize: serialize_greeter_LongGreetRequest,
+    requestDeserialize: deserialize_greeter_LongGreetRequest,
+    responseSerialize: serialize_greeter_LongGreetResponse,
+    responseDeserialize: deserialize_greeter_LongGreetResponse,
   },
 };
 

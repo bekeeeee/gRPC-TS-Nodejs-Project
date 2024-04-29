@@ -6,6 +6,49 @@
 
 import * as jspb from "google-protobuf";
 
+export class LongGreetRequest extends jspb.Message { 
+
+    hasGreeting(): boolean;
+    clearGreeting(): void;
+    getGreeting(): Greeting | undefined;
+    setGreeting(value?: Greeting): LongGreetRequest;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): LongGreetRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: LongGreetRequest): LongGreetRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: LongGreetRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): LongGreetRequest;
+    static deserializeBinaryFromReader(message: LongGreetRequest, reader: jspb.BinaryReader): LongGreetRequest;
+}
+
+export namespace LongGreetRequest {
+    export type AsObject = {
+        greeting?: Greeting.AsObject,
+    }
+}
+
+export class LongGreetResponse extends jspb.Message { 
+    getResult(): string;
+    setResult(value: string): LongGreetResponse;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): LongGreetResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: LongGreetResponse): LongGreetResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: LongGreetResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): LongGreetResponse;
+    static deserializeBinaryFromReader(message: LongGreetResponse, reader: jspb.BinaryReader): LongGreetResponse;
+}
+
+export namespace LongGreetResponse {
+    export type AsObject = {
+        result: string,
+    }
+}
+
 export class GreetManyTimesRequest extends jspb.Message { 
 
     hasGreeting(): boolean;

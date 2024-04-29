@@ -5,6 +5,8 @@ import {
   GreetManyTimesResponse,
   HelloReply,
   HelloRequest,
+  LongGreetRequest,
+  LongGreetResponse,
 } from "./generated/greeter_pb";
 import {
   CalculatorService,
@@ -55,6 +57,30 @@ class CalculatorServer implements ICalculatorServer {
 class GreeterServer implements IGreeterServer {
   [method: string]: grpc.UntypedHandleCall;
 
+  longGreet(
+    call: grpc.ServerDuplexStream<LongGreetRequest, LongGreetResponse>
+  ) {
+    call.on("data", (request: LongGreetRequest) => {
+      let fullName =
+        request.getGreeting().getFirstName() +
+        " " +
+        request.getGreeting().getLastName();
+      console.log("Hello " + fullName);
+    });
+
+    call.on("end", () => {
+      let response = new LongGreetResponse();
+      response.setResult("Long Greet Client Streaming...");
+      call.write(response);
+      call.end();
+    });
+
+    call.on("error", error => {
+      console.error(error);
+    });
+  }
+
+  // longGreet: grpc.handleClientStreamingCall<LongGreetRequest, LongGreetResponse>;
   greetManyTimes(
     call: grpc.ServerWritableStream<
       GreetManyTimesRequest,
@@ -88,8 +114,8 @@ class GreeterServer implements IGreeterServer {
 
 function getServer(): grpc.Server {
   const server = new grpc.Server();
-  // server.addService(GreeterService, new GreeterServer());
-  server.addService(CalculatorService, new CalculatorServer());
+  server.addService(GreeterService, new GreeterServer());
+  // server.addService(CalculatorService, new CalculatorServer());
 
   return server;
 }
