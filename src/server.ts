@@ -1,6 +1,8 @@
 import * as grpc from "@grpc/grpc-js";
 import { GreeterService, IGreeterServer } from "./generated/greeter_grpc_pb";
 import {
+  GreetEveryOneRequest,
+  GreetEveryOneResponse,
   GreetManyTimesRequest,
   GreetManyTimesResponse,
   HelloReply,
@@ -18,6 +20,7 @@ import {
   SumRequest,
   SumResponse,
 } from "./generated/calculator_pb";
+import { request } from "http";
 
 class CalculatorServer implements ICalculatorServer {
   [method: string]: grpc.UntypedHandleCall;
@@ -56,7 +59,34 @@ class CalculatorServer implements ICalculatorServer {
 
 class GreeterServer implements IGreeterServer {
   [method: string]: grpc.UntypedHandleCall;
-
+  async greetEveryOne(
+    call: grpc.ServerDuplexStream<LongGreetRequest, LongGreetResponse>
+  ) {
+    call.on("data", (request: GreetEveryOneRequest) => {
+      let fullName =
+        request.getGreeting().getFirstName() +
+        " " +
+        request.getGreeting().getLastName();
+      console.log("Hello " + fullName);
+      let response = new GreetEveryOneResponse();
+      response.setResult("Hello " + fullName);
+      call.write(response);
+    });
+    call.on("error", error => {
+      console.log("Error", error);
+    });
+    call.on("end", () => {
+      call.end();
+    });
+    for (let i = 0; i < 10; i++) {
+      let response = new GreetEveryOneResponse();
+      response.setResult("Hello " + i);
+      call.write(response);
+      await sleep(1000);
+    }
+    call.end();
+  }
+  // greetEveryOne: grpc.handleBidiStreamingCall<GreetEveryOneRequest, GreetEveryOneResponse>;
   longGreet(
     call: grpc.ServerDuplexStream<LongGreetRequest, LongGreetResponse>
   ) {
@@ -112,6 +142,12 @@ class GreeterServer implements IGreeterServer {
   }
 }
 
+async function sleep(interval) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(""), interval);
+  });
+}
+
 function getServer(): grpc.Server {
   const server = new grpc.Server();
   server.addService(GreeterService, new GreeterServer());
@@ -129,7 +165,7 @@ server.bindAsync(
       console.error("Error binding server:", error);
       return;
     }
-    server.start();
+    // server.start();
     console.log(`Server running at http://127.0.0.1:${port}`);
   }
 );

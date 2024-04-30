@@ -1,6 +1,8 @@
 import * as grpc from "@grpc/grpc-js";
 import { GreeterClient } from "./generated/greeter_grpc_pb";
 import {
+  GreetEveryOneRequest,
+  GreetEveryOneResponse,
   GreetManyTimesRequest,
   Greeting,
   HelloRequest,
@@ -22,7 +24,7 @@ function callLongGreeting() {
 
   let call = client.longGreet((err, response) => {
     if (err) {
-      console.error("hereeeeeeeeeeeee######",err);
+      console.error("hereeeeeeeeeeeee######", err);
     }
     console.log(response.getResult());
   });
@@ -40,6 +42,43 @@ function callLongGreeting() {
         call.end();
       }
     }, 1000);
+}
+
+function greetEveryoneGreeting() {
+  const client = new GreeterClient(
+    "localhost:8999",
+    grpc.credentials.createInsecure()
+  );
+
+  let call = client.greetEveryOne();
+
+  call.on("data", (response: GreetEveryOneResponse) => {
+    console.log("Hello client: " + response.getResult());
+  });
+
+  let count = 0,
+    intervalId = setInterval(function () {
+      let request = new GreetEveryOneRequest();
+      let greet = new Greeting();
+      greet.setFirstName("Mohamed");
+      greet.setLastName("Ragab");
+      request.setGreeting(greet);
+      call.write(request);
+      if (++count > 3) {
+        clearInterval(intervalId);
+        call.end();
+      }
+    }, 1000);
+
+  call.on("end", () => {
+    console.log("Server has finished sending");
+  });
+  call.on("error", error => {
+    console.error("Error:", error);
+  });
+  call.on("status", status => {
+    console.log("Status:", status);
+  });
 }
 
 function main() {
@@ -68,7 +107,7 @@ function main() {
   //   console.log("Status:", status);
   // });
 
-  callLongGreeting();
+  greetEveryoneGreeting();
 }
 
 main();

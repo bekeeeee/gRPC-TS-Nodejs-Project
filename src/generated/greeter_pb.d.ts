@@ -6,6 +6,49 @@
 
 import * as jspb from "google-protobuf";
 
+export class GreetEveryOneRequest extends jspb.Message { 
+
+    hasGreeting(): boolean;
+    clearGreeting(): void;
+    getGreeting(): Greeting | undefined;
+    setGreeting(value?: Greeting): GreetEveryOneRequest;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GreetEveryOneRequest.AsObject;
+    static toObject(includeInstance: boolean, msg: GreetEveryOneRequest): GreetEveryOneRequest.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GreetEveryOneRequest, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GreetEveryOneRequest;
+    static deserializeBinaryFromReader(message: GreetEveryOneRequest, reader: jspb.BinaryReader): GreetEveryOneRequest;
+}
+
+export namespace GreetEveryOneRequest {
+    export type AsObject = {
+        greeting?: Greeting.AsObject,
+    }
+}
+
+export class GreetEveryOneResponse extends jspb.Message { 
+    getResult(): string;
+    setResult(value: string): GreetEveryOneResponse;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): GreetEveryOneResponse.AsObject;
+    static toObject(includeInstance: boolean, msg: GreetEveryOneResponse): GreetEveryOneResponse.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: GreetEveryOneResponse, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): GreetEveryOneResponse;
+    static deserializeBinaryFromReader(message: GreetEveryOneResponse, reader: jspb.BinaryReader): GreetEveryOneResponse;
+}
+
+export namespace GreetEveryOneResponse {
+    export type AsObject = {
+        result: string,
+    }
+}
+
 export class LongGreetRequest extends jspb.Message { 
 
     hasGreeting(): boolean;

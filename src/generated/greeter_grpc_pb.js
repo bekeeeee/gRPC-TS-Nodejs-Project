@@ -4,6 +4,28 @@
 var grpc = require('@grpc/grpc-js');
 var greeter_pb = require('./greeter_pb.js');
 
+function serialize_greeter_GreetEveryOneRequest(arg) {
+  if (!(arg instanceof greeter_pb.GreetEveryOneRequest)) {
+    throw new Error('Expected argument of type greeter.GreetEveryOneRequest');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greeter_GreetEveryOneRequest(buffer_arg) {
+  return greeter_pb.GreetEveryOneRequest.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
+function serialize_greeter_GreetEveryOneResponse(arg) {
+  if (!(arg instanceof greeter_pb.GreetEveryOneResponse)) {
+    throw new Error('Expected argument of type greeter.GreetEveryOneResponse');
+  }
+  return Buffer.from(arg.serializeBinary());
+}
+
+function deserialize_greeter_GreetEveryOneResponse(buffer_arg) {
+  return greeter_pb.GreetEveryOneResponse.deserializeBinary(new Uint8Array(buffer_arg));
+}
+
 function serialize_greeter_GreetManyTimesRequest(arg) {
   if (!(arg instanceof greeter_pb.GreetManyTimesRequest)) {
     throw new Error('Expected argument of type greeter.GreetManyTimesRequest');
@@ -108,6 +130,18 @@ longGreet: {
     requestDeserialize: deserialize_greeter_LongGreetRequest,
     responseSerialize: serialize_greeter_LongGreetResponse,
     responseDeserialize: deserialize_greeter_LongGreetResponse,
+  },
+  // BiDi streaming
+greetEveryOne: {
+    path: '/greeter.Greeter/GreetEveryOne',
+    requestStream: true,
+    responseStream: true,
+    requestType: greeter_pb.GreetEveryOneRequest,
+    responseType: greeter_pb.GreetEveryOneResponse,
+    requestSerialize: serialize_greeter_GreetEveryOneRequest,
+    requestDeserialize: deserialize_greeter_GreetEveryOneRequest,
+    responseSerialize: serialize_greeter_GreetEveryOneResponse,
+    responseDeserialize: deserialize_greeter_GreetEveryOneResponse,
   },
 };
 
